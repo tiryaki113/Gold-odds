@@ -85,10 +85,10 @@ document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()
 document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===b));render()}));
 $('#search').addEventListener('input',render);
 const todayEl=$('#today');if(todayEl)todayEl.textContent='● '+new Intl.DateTimeFormat('tr-TR',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
-render();
 
 // Secure SportScore adapter. Public API; no API token is required.
 let dataMode='demo';
+render();
 function safeText(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function card(g){
  const fav=favorites.includes(g.id), hasOdds=Array.isArray(g.odds)&&g.odds.length>0;
