@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GOLD ODDS — Maç Analiz Merkezi</title>
+<style>
+:root{--bg:#090b10;--panel:#121620;--panel2:#181e2a;--line:#272f3d;--gold:#d9ad52;--gold2:#f2d48b;--muted:#8c96a8;--text:#f4f5f7;--green:#36c58a;--red:#ef6c70}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -10%,#252034 0,#090b10 45%);color:var(--text);font:14px/1.5 Inter,system-ui,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.app{max-width:1440px;margin:auto;padding:0 22px}
+header{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1.8px;font-size:19px}.brand-mark{width:38px;height:38px;border:1px solid var(--gold);border-radius:12px;display:grid;place-items:center;color:var(--gold);font-size:20px;box-shadow:0 0 22px #d9ad5220}
+.brand span:last-child{color:var(--gold)}nav{display:flex;gap:7px}nav button,.ghost{background:transparent;color:#aeb6c5;border:0;padding:10px 13px;border-radius:9px}nav button.active,nav button:hover{background:#d9ad5218;color:var(--gold2)}
+.header-right{display:flex;align-items:center;gap:12px}.live-pill{color:#ff777b;font-size:11px;font-weight:800;letter-spacing:1px}.live-pill:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff666d;margin-right:7px;box-shadow:0 0 9px #ff666d}
+.btn-gold{border:0;border-radius:9px;padding:10px 15px;background:linear-gradient(135deg,#f1d58e,#bd8732);color:#17130b;font-weight:800}
+.hero{padding:30px 0 24px;display:flex;justify-content:space-between;align-items:end;gap:20px}.eyebrow{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}.hero h1{font-size:clamp(27px,4vw,42px);line-height:1.1;margin:8px 0}.hero p{margin:0;color:var(--muted);max-width:620px}.date-chip{border:1px solid var(--line);background:#111620;padding:10px 14px;border-radius:10px;color:#c6cbd4;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:0 0 24px}.stat,.panel,.match{background:linear-gradient(145deg,#151b26,#10141c);border:1px solid var(--line);border-radius:14px}.stat{padding:16px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:24px;margin-top:4px}.stat .up{color:var(--green);font-size:11px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}.section-head h2{font-size:17px;margin:0}.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}.filter{background:#121722;border:1px solid var(--line);color:#aeb6c5;border-radius:8px;padding:8px 12px}.filter.active{border-color:#b68a3e;color:var(--gold2);background:#d9ad5215}
+.match-list{display:grid;gap:10px}.match{padding:15px;display:grid;grid-template-columns:90px minmax(0,1fr) 245px;gap:15px;align-items:center}.match-meta{color:var(--muted);font-size:11px}.league{color:#d4b978;font-size:11px;font-weight:700}.teams{display:grid;gap:9px}.team{display:flex;align-items:center;gap:9px;font-weight:650}.crest{width:25px;height:25px;border-radius:8px;background:#252d3b;display:grid;place-items:center;font-size:12px}.vs{color:var(--muted);font-size:10px;margin-left:34px}.markets{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.odd{background:#202735;border:1px solid #303a4b;border-radius:8px;padding:8px 5px;text-align:center;color:#dce0e8}.odd small{display:block;color:#8f9aac;font-size:10px}.odd b{color:var(--gold2);font-size:14px}.odd:hover,.odd.selected{border-color:var(--gold);background:#d9ad5220}.star{color:#657084;border:0;background:none;font-size:18px}.star.on{color:var(--gold)}
+.panel{padding:17px;margin-bottom:13px}.panel h3{font-size:15px;margin:0 0 13px}.side-title{display:flex;justify-content:space-between;align-items:center}.side-title span{color:var(--muted);font-size:11px}.slip-empty{border:1px dashed #3a4352;border-radius:10px;padding:22px 12px;text-align:center;color:var(--muted)}.slip-item{background:#1a2230;border-radius:9px;padding:10px;margin-bottom:8px}.slip-item b{display:block;font-size:12px}.slip-item small{color:var(--muted)}.slip-item button{float:right;background:none;border:0;color:#aab2c0}.total-row{display:flex;justify-content:space-between;color:#b4bdca;margin:10px 0}.total-row strong{color:var(--gold2)}.full{width:100%}.notice{font-size:11px;color:#8d97a8;line-height:1.55;margin-top:12px}
+.search{background:#111722;border:1px solid var(--line);border-radius:9px;color:white;padding:9px 12px;min-width:190px;outline:none}.search:focus{border-color:var(--gold)}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 30px}.insight{padding:16px;background:#151b26;border:1px solid var(--line);border-radius:13px}.insight p{color:var(--muted);margin:5px 0 0}.tag{display:inline-block;color:var(--green);background:#36c58a16;border-radius:5px;padding:3px 7px;font-size:10px;font-weight:800}
+footer{border-top:1px solid var(--line);padding:20px 0 30px;color:#707b8d;font-size:11px;display:flex;justify-content:space-between;gap:20px}
+.page{display:none}.page.active{display:block}.empty{padding:45px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr;gap:12px}.match{grid-template-columns:65px minmax(0,1fr)}.markets{grid-column:2}.stats{grid-template-columns:repeat(2,1fr)}nav{display:none}}
+@media(max-width:560px){.app{padding:0 13px}header{height:65px}.brand{font-size:16px}.header-right .live-pill{display:none}.hero{align-items:start;flex-direction:column}.date-chip{font-size:11px}.match{padding:12px;grid-template-columns:1fr}.match-meta{display:flex;gap:10px}.teams{grid-template-columns:1fr 1fr}.vs{display:none}.markets{grid-column:1}.side{display:block}.bottom{grid-template-columns:1fr}.search{min-width:0;width:100%}footer{flex-direction:column}}
+</style></head>
+<body><div class="app">
+<header>
+ <div class="brand"><div class="brand-mark">◆</div><div>GOLD <span>ODDS</span></div></div>
+ <nav><button class="active" data-page="home">Maç Merkezi</button><button data-page="predictions">Tahminler</button><button data-page="favorites">Favoriler</button><button data-page="analysis">Analiz</button></nav>
+ <div class="header-right"><span class="live-pill">CANLI MERKEZ</span><button class="btn-gold" onclick="showPage('predictions')">Tahminleri keşfet</button></div>
+</header>
+<section class="hero">
+ <div><div class="eyebrow">Akıllı maç analiz platformu</div><h1>Oyunu oku. <span style="color:var(--gold)">Veriyle düşün.</span></h1><p>Karşılaşmaları takip et, istatistikleri incele ve kendi maç tahminlerini bilinçli şekilde değerlendir.</p></div>
+ <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="date-chip" id="connectionStatus">● API bağlantısı bekleniyor</span><button class="btn-gold" id="refreshLive">Verileri yenile</button></div>
+</section>
+<div class="stats">
+ <div class="stat"><small>Bugünkü karşılaşma</small><strong id="matchCount">08</strong><span class="up">Futbol · Basketbol</span></div>
+ <div class="stat"><small>Analiz edilen lig</small><strong>12</strong><span class="up">Seçili organizasyonlar</span></div>
+ <div class="stat"><small>Platform tahminleri</small><strong>06</strong><span class="up">Örnek analiz içeriği</span></div>
+ <div class="stat"><small>Veri güncelliği</small><strong style="font-size:19px">SportScore</strong><span class="up">API bağlantısı hazırlanıyor</span></div>
+</div>
+<div class="page active" id="page-home"><div class="layout"><main>
+ <div class="section-head"><h2>⚽ Maç merkezi</h2><input class="search" id="search" placeholder="Takım veya lig ara…"></div>
+ <div class="filters"><button class="filter active" data-filter="all">Tümü</button><button class="filter" data-filter="live">● Canlı</button><button class="filter" data-filter="football">Futbol</button><button class="filter" data-filter="basketball">Basketbol</button></div>
+ <div class="match-list" id="matches"></div>
+ </main><aside class="side"><div class="panel"><div class="side-title"><h3>Kupon analiz alanı</h3><span id="slipCount">0 seçim</span></div><div id="slip"><div class="slip-empty">Henüz seçim eklemedin.<br><small>Bir maçın oran kutusuna dokun.</small></div></div><div class="total-row"><span>Toplam oran (örnek)</span><strong id="totalOdds">1.00</strong></div><button class="btn-gold full" onclick="analyzeSlip()">Kuponu analiz et</button><p class="notice">Bu alan yalnızca matematiksel örnekleme içindir. Gerçek bahis, ödeme veya para yatırma işlemi yoktur.</p></div>
+ <div class="panel"><h3>Günün analiz notu</h3><span class="tag">ÖRNEK İÇERİK</span><p style="color:#b4bdca;margin-bottom:0">Tahminleri değerlendirirken takım formu, iç saha performansı, sakatlıklar ve maç yoğunluğunu birlikte incele.</p></div></aside></div>
+ <div class="bottom"><div class="insight"><b style="color:var(--gold2)">📊 Veri odaklı yaklaşım</b><p>Tek bir istatistik yerine form, gol ortalaması ve karşılıklı maç geçmişini beraber değerlendir.</p></div><div class="insight"><b style="color:var(--gold2)">🧠 Sorumlu karar</b><p>Hiçbir tahmin kesin sonuç garantisi vermez. Örnek oranlar gerçek zamanlı piyasa verisi değildir.</p></div></div>
+</div>
+<div class="page" id="page-predictions"><div class="section-head"><h2>✦ Öne çıkan tahmin analizleri</h2></div><div class="bottom">
+ <div class="insight"><span class="tag">ÖRNEK ANALİZ</span><h3>Manchester City – Arsenal</h3><p>İki takımın hücum üretkenliği ve savunma geçişleri karşılaştırılmalı. Son maçlar ve kadro haberleri kontrol edilmeden kesin çıkarım yapılmamalı.</p></div>
+ <div class="insight"><span class="tag">ÖRNEK ANALİZ</span><h3>Real Madrid – Barcelona</h3><p>Derbi maçlarında tempo, kart ortalaması ve oyun planı değişkenlik gösterebilir. Geçmiş karşılaşmalar tek başına yeterli değildir.</p></div>
+ <div class="insight"><span class="tag">ÖRNEK ANALİZ</span><h3>Fenerbahçe – Galatasaray</h3><p>İç saha etkisi, güncel form ve eksik oyuncular analizde birlikte ele alınmalı.</p></div>
+ <div class="insight"><span class="tag">ÖRNEK ANALİZ</span><h3>NBA maç değerlendirmesi</h3><p>Back-to-back takvim, oyuncu dakika yükü ve hücum verimliliği basketbol analizinde önemlidir.</p></div>
+ </div></div>
+<div class="page" id="page-favorites"><div class="section-head"><h2>★ Favori karşılaşmalar</h2></div><div id="favList" class="match-list"></div></div>
+<div class="page" id="page-analysis"><div class="section-head"><h2>📈 Analiz merkezi</h2></div><div class="bottom"><div class="insight"><h3>Form analizi</h3><p>Son 5 maç performansı, atılan/yenen gol ve rakip kalitesi birlikte değerlendirilmelidir.</p></div><div class="insight"><h3>Oran okuma</h3><p>Ondalık oranların ima ettiği olasılık yaklaşık olarak 1 / oran şeklinde hesaplanır. Marj ve piyasa koşulları bu değeri etkiler.</p></div><div class="insight"><h3>Karşılıklı gol</h3><p>Takımların gol bulma ve gol yeme eğilimleri, maçın oyun tarzıyla birlikte incelenebilir.</p></div><div class="insight"><h3>Risk notu</h3><p>İstatistikler belirsizliği ortadan kaldırmaz. Geçmiş performans gelecek sonucu garanti etmez.</p></div></div></div>
+<footer><span>© 2026 GOLD ODDS · Maç analiz ve tahmin platformu · <a href="https://sportscore.com/" rel="dofollow" title="Sports data by SportScore" style="color:var(--gold2);text-decoration:none">Powered by SportScore</a></span><span>SportScore canlı veri bağlantısı · 60 sn önbellek</span></footer>
+</div>
+<script>
+let games=[
+{id:1,sport:'football',league:'İNGİLTERE · PREMIER LEAGUE',time:'20:00',status:'Bugün',home:'Manchester City',away:'Arsenal',h:'MC',a:'AR',odds:[1.92,3.55,3.80],tip:'Örnek değerlendirme: iki takımın güncel kadro ve form verileri kontrol edilmeli.'},
+{id:2,sport:'football',league:'İSPANYA · LA LIGA',time:'21:00',status:'Bugün',home:'Real Madrid',away:'Barcelona',h:'RM',a:'FC',odds:[2.10,3.70,2.95],tip:'Örnek değerlendirme: derbi dinamikleri ve oyun planı belirleyici olabilir.'},
+{id:3,sport:'football',league:'TÜRKİYE · SÜPER LİG',time:'19:00',status:'Bugün',home:'Fenerbahçe',away:'Galatasaray',h:'FB',a:'GS',odds:[2.25,3.20,2.85],tip:'Örnek değerlendirme: eksikler ve iç saha performansı incelenmeli.'},
+{id:4,sport:'football',league:'İTALYA · SERIE A',time:'18:45',status:'Canlı',home:'Inter',away:'AC Milan',h:'IN',a:'MI',odds:[2.05,3.25,3.40],tip:'Canlı maç verisi bulunmuyor; bu karşılaşma örnek amaçlı listelenmiştir.'},
+{id:5,sport:'basketball',league:'NBA · NORMAL SEZON',time:'02:30',status:'Yarın',home:'Boston Celtics',away:'New York Knicks',h:'BC',a:'NY',odds:[1.72,2.05],tip:'Örnek değerlendirme: oyuncu durumu ve dinlenme takvimi kontrol edilmeli.'},
+{id:6,sport:'basketball',league:'NBA · NORMAL SEZON',time:'03:00',status:'Yarın',home:'LA Lakers',away:'Golden State',h:'LA',a:'GS',odds:[1.88,1.92],tip:'Örnek değerlendirme: tempo ve üç sayı verimliliği kıyaslanmalı.'}
+];
+let filter='all', selected=[], favorites=[];
+const $=s=>document.querySelector(s);
+function render(){
+ const q=($('#search')?.value||'').toLocaleLowerCase('tr');
+ let list=games.filter(g=>(filter==='all'||filter===g.sport||(filter==='live'&&g.status==='Canlı'))&&(g.home+' '+g.away+' '+g.league).toLocaleLowerCase('tr').includes(q));
+ $('#matches').innerHTML=list.map(card).join('')||'<div class="empty">Aramana uygun karşılaşma bulunamadı.</div>';
+ $('#favList').innerHTML=games.filter(g=>favorites.includes(g.id)).map(card).join('')||'<div class="empty">Henüz favori maçın yok. Maç kartındaki ☆ simgesini kullan.</div>';
+}
+function card(g){let fav=favorites.includes(g.id);return `<article class="match"><div class="match-meta"><span>${g.time}</span><span>${g.status==='Canlı'?'<span style="color:#ff777b">● CANLI</span>':g.status}</span></div><div><div class="league">${g.league}</div><div class="teams" style="margin-top:8px"><div class="team"><span class="crest">${g.h}</span>${g.home}</div><div class="team"><span class="crest">${g.a}</span>${g.away}</div></div></div><div><div class="markets">${g.odds.map((o,i)=>`<button class="odd ${selected.some(s=>s.id===g.id&&s.i===i)?'selected':''}" onclick="togglePick(${g.id},${i})"><small>${g.sport==='basketball'?(i===0?'Ev sahibi':'Deplasman'):['1','X','2'][i]}</small><b>${o.toFixed(2)}</b></button>`).join('')}</div><div style="display:flex;justify-content:space-between;margin-top:7px"><small style="color:var(--muted)">Örnek oranlar</small><button class="star ${fav?'on':''}" onclick="toggleFav(${g.id})">${fav?'★':'☆'}</button></div></div></article>`}
+function togglePick(id,i){let idx=selected.findIndex(s=>s.id===id);if(idx>=0&&selected[idx].i===i)selected.splice(idx,1);else{if(idx>=0)selected.splice(idx,1);selected.push({id,i})}render();renderSlip()}
+function toggleFav(id){favorites.includes(id)?favorites=favorites.filter(x=>x!==id):favorites.push(id);render()}
+function renderSlip(){let box=$('#slip');$('#slipCount').textContent=selected.length+' seçim';if(!selected.length){box.innerHTML='<div class="slip-empty">Henüz seçim eklemedin.<br><small>Bir maçın oran kutusuna dokun.</small></div>';$('#totalOdds').textContent='1.00';return}let total=1;box.innerHTML=selected.map(s=>{let g=games.find(x=>x.id===s.id),o=g.odds[s.i],label=g.sport==='basketball'?(s.i===0?'Ev sahibi':'Deplasman'):['1','X','2'][s.i];total*=o;return `<div class="slip-item"><button onclick="togglePick(${s.id},${s.i})">×</button><b>${g.home} – ${g.away}</b><small>${label} · ${o.toFixed(2)}</small></div>`}).join('');$('#totalOdds').textContent=total.toFixed(2)}
+function analyzeSlip(){if(!selected.length){alert('Önce maçlardan bir seçim ekle.');return}let total=selected.reduce((v,s)=>v*games.find(g=>g.id===s.id).odds[s.i],1);alert('Demo kupon analizi\\nSeçim sayısı: '+selected.length+'\\nÇarpım oranı: '+total.toFixed(2)+'\\n\\nBu yalnızca matematiksel bir örnektir; gerçek bahis veya kazanç vaadi değildir.')}
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$('#page-'+p).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));if(p==='favorites')render()}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===b));render()}));
+$('#search').addEventListener('input',render);
+const todayEl=$('#today');if(todayEl)todayEl.textContent='● '+new Intl.DateTimeFormat('tr-TR',{weekday:'long',day:'numeric',month:'long'}).format(new Date());
+render();
+
+// Secure SportScore adapter. Public API; no API token is required.
+let dataMode='demo';
+function safeText(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function card(g){
+ const fav=favorites.includes(g.id), hasOdds=Array.isArray(g.odds)&&g.odds.length>0;
+ const score=g.score?`<div style="font-size:12px;margin-top:5px">Skor: <b style="color:var(--gold2)">${safeText(g.score)}</b></div>`:'';
+ return `<article class="match"><div class="match-meta"><span>${safeText(g.time||'')}</span><span>${g.status==='Canlı'?'<span style="color:#ff777b">● CANLI</span>':safeText(g.status||'')}</span></div><div><div class="league">${safeText(g.league||'')}</div><div class="teams" style="margin-top:8px"><div class="team"><span class="crest">${safeText(g.h||'—')}</span>${safeText(g.home)}</div><div class="team"><span class="crest">${safeText(g.a||'—')}</span>${safeText(g.away)}</div></div>${score}</div><div>${hasOdds?`<div class="markets">${g.odds.map((o,i)=>`<button class="odd ${selected.some(s=>s.id===g.id&&s.i===i)?'selected':''}" onclick="togglePick(${Number(g.id)},${i})"><small>${['1','X','2'][i]}</small><b>${Number(o).toFixed(2)}</b></button>`).join('')}</div>`:`<div class="slip-empty" style="padding:12px">Oran akışı bu bağlantıda etkin değil.</div>`}<div style="display:flex;justify-content:space-between;margin-top:7px"><small style="color:var(--muted)">${dataMode==='live'?'Sağlayıcı verisi':'Örnek veri'}</small><button class="star ${fav?'on':''}" onclick="toggleFav(${Number(g.id)})">${fav?'★':'☆'}</button></div></div></article>`;
+}
+function togglePick(id,i){const g=games.find(x=>x.id===id);if(!g||!g.odds?.length){alert('Bu maç için oran sağlayıcısı bağlı değil.');return;}let idx=selected.findIndex(s=>s.id===id);if(idx>=0&&selected[idx].i===i)selected.splice(idx,1);else{if(idx>=0)selected.splice(idx,1);selected.push({id,i});}render();renderSlip();}
+function kickoff(v){if(!v)return '';const d=new Date(v);return isNaN(d)?String(v).slice(11,16):new Intl.DateTimeFormat('tr-TR',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Istanbul'}).format(d);}
+async function loadLiveData(){
+ const status=document.getElementById('connectionStatus'), btn=document.getElementById('refreshLive');if(btn)btn.disabled=true;
+ try{
+  const apiUrl='https://sportscore.com/api/widget/matches/?sport=football&limit=50&src=gold-odds';
+  const r=await fetch(apiUrl,{cache:'no-store'}), p=await r.json();if(!r.ok)throw new Error('SportScore HTTP '+r.status);
+  if(!Array.isArray(p.matches))throw new Error('SportScore yanıtında maç listesi bulunamadı');
+  games=p.matches.map((f,i)=>{const raw=String(f.status_text||f.status||'Planlandı');const isLive=/live|in.?play|1st half|2nd half|half.?time|extra.?time|penalt|canlı/i.test(raw);const hs=f.home_score,as=f.away_score;const score=hs!==null&&hs!==undefined&&as!==null&&as!==undefined?`${hs} - ${as}`:'';return {id:Number(f.id)||i+100000,sport:'football',league:f.competition||f.league||'FUTBOL',time:kickoff(f.time||f.starting_at),status:isLive?'Canlı':raw,home:f.home||'Ev sahibi',away:f.away||'Deplasman',h:(f.home||'EV').slice(0,2).toUpperCase(),a:(f.away||'DEP').slice(0,2).toUpperCase(),score,odds:[]};});
+  dataMode='live';selected=[];render();renderSlip();status.textContent=`● SportScore API · ${games.length} maç · ${new Date().toLocaleTimeString('tr-TR')}`;status.style.color='var(--green)';document.getElementById('matchCount').textContent=String(games.length).padStart(2,'0');
+ }catch(e){status.textContent='● SportScore bağlantısı kurulamadı';status.style.color='var(--red)';status.title=e.message;console.error(e);}
+ finally{if(btn)btn.disabled=false;}
+}
+document.getElementById('refreshLive')?.addEventListener('click',loadLiveData);
+loadLiveData();setInterval(loadLiveData,60000);
+
+</script></body></html>
