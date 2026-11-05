@@ -100,12 +100,14 @@ function kickoff(v){if(!v)return '';const d=new Date(v);return isNaN(d)?String(v
 async function loadLiveData(){
  const status=document.getElementById('connectionStatus'), btn=document.getElementById('refreshLive');if(btn)btn.disabled=true;
  try{
-  const apiUrl='https://sportscore.com/api/widget/matches/?sport=football&limit=50&src=gold-odds';
-  const r=await fetch(apiUrl,{cache:'no-store'}), p=await r.json();if(!r.ok)throw new Error('SportScore HTTP '+r.status);
-  if(!Array.isArray(p.matches))throw new Error('SportScore yanıtında maç listesi bulunamadı');
-  games=p.matches.map((f,i)=>{const raw=String(f.status_text||f.status||'Planlandı');const isLive=/live|in.?play|1st half|2nd half|half.?time|extra.?time|penalt|canlı/i.test(raw);const hs=f.home_score,as=f.away_score;const score=hs!==null&&hs!==undefined&&as!==null&&as!==undefined?`${hs} - ${as}`:'';return {id:Number(f.id)||i+100000,sport:'football',league:f.competition||f.league||'FUTBOL',time:kickoff(f.time||f.starting_at),status:isLive?'Canlı':raw,home:f.home||'Ev sahibi',away:f.away||'Deplasman',h:(f.home||'EV').slice(0,2).toUpperCase(),a:(f.away||'DEP').slice(0,2).toUpperCase(),score,odds:[]};});
-  dataMode='live';selected=[];render();renderSlip();status.textContent=`● SportScore API · ${games.length} maç · ${new Date().toLocaleTimeString('tr-TR')}`;status.style.color='var(--green)';document.getElementById('matchCount').textContent=String(games.length).padStart(2,'0');
- }catch(e){status.textContent='● SportScore bağlantısı kurulamadı';status.style.color='var(--red)';status.title=e.message;console.error(e);}
+  // Aynı alan adındaki Node.js proxy kullanılır; tarayıcıdan SportScore'a doğrudan CORS isteği gönderilmez.
+  const r=await fetch('/api/fixtures',{cache:'no-store'});
+  const p=await r.json();
+  if(!r.ok)throw new Error(p.error||'Sunucu HTTP '+r.status);
+  if(!Array.isArray(p.fixtures))throw new Error('Sunucu yanıtında fixtures listesi bulunamadı');
+  games=p.fixtures.map((f,i)=>{const raw=String(f.status||'Başlamadı');const isLive=!!f.is_live;const home=f.home||'Ev sahibi',away=f.away||'Deplasman';return {id:Number(f.id)||i+100000,sport:'football',league:f.league||'FUTBOL',time:kickoff(f.starting_at),status:raw,home,away,h:home.slice(0,2).toUpperCase(),a:away.slice(0,2).toUpperCase(),score:f.score||'',odds:[]};});
+  dataMode='live';selected=[];render();renderSlip();status.textContent=`● ${p.provider||'SportScore'} · ${games.length} maç · ${new Date().toLocaleTimeString('tr-TR')}`;status.style.color='var(--green)';document.getElementById('matchCount').textContent=String(games.length).padStart(2,'0');
+ }catch(e){status.textContent='● Canlı veri bağlantısı kurulamadı';status.style.color='var(--red)';status.title=e.message;console.error(e);}
  finally{if(btn)btn.disabled=false;}
 }
 document.getElementById('refreshLive')?.addEventListener('click',loadLiveData);
